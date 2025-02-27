@@ -4,7 +4,7 @@ import { FaClover } from "react-icons/fa6";
 import { IoBagHandle, IoLogoDeviantart, IoMenu, IoClose } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 
-export default function Navbar() {
+export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
