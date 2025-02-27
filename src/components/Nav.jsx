@@ -8,8 +8,10 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
-  // Close the menu if you click outside
+  // Close the menu if clicking outside
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false);
@@ -23,17 +25,17 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div className="w-full p-6 md:p-8 bg-transparent">
-      <nav className="max-w-[1340px] mx-auto flex items-center justify-between p-4 bg-white rounded-lg relative">
+    <div className="w-full fixed top-0 left-0 z-50 bg-white shadow-md">
+      <nav className="max-w-[1340px] mx-auto flex items-center justify-between p-5 md:p-6 rounded-lg relative bg-white bg-opacity-80 backdrop-blur-lg shadow-sm">
         
         {/* Logo */}
-        <div className="flex items-center text-3xl font-medium">
+        <div className="flex items-center text-3xl font-bold text-gray-900">
           <IoLogoDeviantart size={40} className="mr-2 text-[#00df9a]" />
           Krist
         </div>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex gap-10 text-lg font-semibold tracking-wide">
+        <ul className="hidden md:flex gap-10 text-lg font-medium text-gray-700">
           {["Home", "Shop", "Our Story", "Blog", "Contact Us"].map((item, index) => (
             <li key={index} className="cursor-pointer hover:text-[#00df9a] hover:underline hover:underline-offset-4 transition-all flex items-center">
               {item} {item === "Shop" && <IoIosArrowDown className="ml-1" />}
@@ -42,49 +44,50 @@ export default function Navbar() {
         </ul>
 
         {/* Icons & Login Button */}
-        <div className="hidden md:flex items-center gap-5">
-          <CiSearch size={22} className="cursor-pointer hover:text-[#00df9a] transition" />
-          <FaClover size={22} className="cursor-pointer hover:text-[#00df9a] transition" />
-          <IoBagHandle size={22} className="cursor-pointer hover:text-[#00df9a] transition" />
-          <button className="bg-black px-5 py-2 rounded-md font-medium text-white hover:bg-[#00bf87] transition">
+        <div className="hidden md:flex items-center gap-6">
+          <CiSearch size={24} className="cursor-pointer text-gray-600 hover:text-[#00df9a] transition" />
+          <FaClover size={24} className="cursor-pointer text-gray-600 hover:text-[#00df9a] transition" />
+          <IoBagHandle size={24} className="cursor-pointer text-gray-600 hover:text-[#00df9a] transition" />
+          <button className="bg-black px-6 py-2 rounded-md font-semibold text-white hover:bg-[#00bf87] transition">
             Login
           </button>
         </div>
 
         {/* Mobile Menu Button */}
-        <button className="md:hidden text-3xl focus:outline-none" onClick={() => setMenuOpen(!menuOpen)}>
+        <button className="md:hidden text-3xl text-gray-700 focus:outline-none" onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <IoClose /> : <IoMenu />}
         </button>
       </nav>
 
       {/* Mobile Menu */}
-      <div
-        ref={menuRef}
-        className={`md:hidden fixed top-0 left-0 w-full h-screen bg-white shadow-lg flex flex-col items-center pt-20  z-10 transition-transform duration-300 ${
-          menuOpen ? "translate-y-0" : "-translate-y-full"
-        }`}
-      >
-        {/* Close Icon inside the menu */}
-        <button
-          onClick={() => setMenuOpen(false)}
-          className="absolute top-4 right-4 text-3xl"
+      {menuOpen && (
+        <div
+          ref={menuRef}
+          className="md:hidden fixed top-0 left-0 w-full h-screen bg-white bg-opacity-95 shadow-lg flex flex-col items-center pt-24 z-50 transition-all duration-500"
         >
-          <IoClose />
-        </button>
-
-        <ul className="flex flex-col gap-8 text-lg font-semibold">
-          {["Home", "Shop", "Our Story", "Blog", "Contact Us"].map((item, index) => (
-            <li key={index} className="cursor-pointer hover:text-[#00df9a] transition-all flex items-center">
-              {item} {item === "Shop" && <IoIosArrowDown className="ml-1" />}
-            </li>
-          ))}
-        </ul>
-        <div className="mt-8 flex flex-col gap-4">
-          <button className="bg-black w-40 py-2 rounded-md font-medium text-white hover:bg-[#00bf87] transition">
-            Login
+          {/* Close Icon inside the menu */}
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="absolute top-6 right-6 text-3xl text-gray-700"
+          >
+            <IoClose />
           </button>
+
+          <ul className="flex flex-col gap-8 text-lg font-semibold text-gray-800">
+            {["Home", "Shop", "Our Story", "Blog", "Contact Us"].map((item, index) => (
+              <li key={index} className="cursor-pointer hover:text-[#00df9a] transition-all flex items-center">
+                {item} {item === "Shop" && <IoIosArrowDown className="ml-1" />}
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-8 flex flex-col gap-4">
+            <button className="bg-black w-40 py-3 rounded-md font-medium text-white hover:bg-[#00bf87] transition">
+              Login
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
